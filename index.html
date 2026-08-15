@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WholeBudget — download</title>
+<meta name="description" content="A household budgeting app that runs entirely on your own Mac — accounts, bills, receipts, mortgage and trends, with nothing stored in the cloud.">
+<link rel="icon" href="icon.png">
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --fg:#12161c; --muted:#767d89;
+    --accent:#1a7f5a; --accent-ink:#ffffff; --gold:#c8a415; --line:#e4e7ec;
+    --code-bg:#f2f4f7; --chip:#eef1f6;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0d1117; --card:#161b22; --fg:#e6edf3; --muted:#9aa4b2;
+      --accent:#3fbf8f; --accent-ink:#0d1117; --gold:#e8c547; --line:#2a313c;
+      --code-bg:#0b0f14; --chip:#1b222c;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:0 20px 72px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--fg);
+    background:radial-gradient(1100px 620px at 50% -12%, color-mix(in srgb, var(--accent) 12%, var(--bg)) 0%, var(--bg) 46%, var(--bg) 100%);
+    min-height:100vh; line-height:1.55;
+  }
+  .wrap{max-width:680px; margin:0 auto}
+  header{text-align:center; padding:60px 0 8px}
+  .icon{width:104px; height:104px; border-radius:23%; box-shadow:0 8px 28px rgba(0,0,0,.18)}
+  h1{font-size:2.3rem; margin:18px 0 6px; letter-spacing:-.02em}
+  .tag{color:var(--muted); margin:0 0 18px; font-size:1.05rem}
+  .badges{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:0 0 24px}
+  .badge{
+    font-size:.78rem; font-weight:600; color:var(--muted);
+    background:var(--chip); border:1px solid var(--line);
+    padding:4px 12px; border-radius:999px;
+  }
+  .badge.version{
+    color:var(--gold);
+    border-color:color-mix(in srgb, var(--gold) 45%, transparent);
+    background:color-mix(in srgb, var(--gold) 10%, transparent);
+  }
+  .btn{
+    display:inline-block; background:var(--accent); color:var(--accent-ink);
+    text-decoration:none; font-weight:650; font-size:1.05rem;
+    padding:14px 30px; border-radius:11px;
+    box-shadow:0 6px 18px color-mix(in srgb, var(--accent) 35%, transparent);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover{transform:translateY(-1px); box-shadow:0 9px 24px color-mix(in srgb, var(--accent) 42%, transparent)}
+  .cta-row{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; align-items:stretch}
+  .btn-ghost{
+    background:transparent; color:var(--accent);
+    border:1.5px solid var(--accent); box-shadow:none; cursor:pointer;
+    font-family:inherit;
+  }
+  .btn-ghost:hover{
+    background:color-mix(in srgb, var(--accent) 10%, transparent);
+    transform:none; box-shadow:none;
+  }
+  .sub{color:var(--muted); font-size:.85rem; margin-top:12px}
+  .stats{
+    display:flex; justify-content:center; flex-wrap:wrap; gap:0;
+    margin-top:30px; border:1px solid var(--line); border-radius:14px;
+    background:var(--card); overflow:hidden;
+  }
+  .stat{
+    flex:1 1 0; min-width:130px; text-align:center; padding:16px 10px;
+    border-left:1px solid var(--line);
+  }
+  .stat:first-child{border-left:none}
+  .stat b{display:block; font-size:1.35rem; letter-spacing:-.01em}
+  .stat span{color:var(--muted); font-size:.8rem}
+  .fineprint{color:var(--muted); font-size:.85rem; margin:14px 0 0; line-height:1.55}
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:24px 26px; margin-top:30px;
+  }
+  .card h2{font-size:1.05rem; margin:0 0 14px; letter-spacing:.01em}
+  ol{margin:0; padding-left:20px}
+  li{margin-bottom:13px}
+  li:last-child{margin-bottom:0}
+  code{
+    background:var(--code-bg); border:1px solid var(--line); border-radius:6px;
+    padding:2px 6px; font-size:.87em;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  .note{
+    border-left:3px solid var(--gold);
+    background:color-mix(in srgb, var(--gold) 9%, transparent);
+    padding:12px 16px; border-radius:0 8px 8px 0; margin-top:16px;
+    font-size:.92rem;
+  }
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:6px}
+  .feat{font-size:.93rem; display:flex; gap:11px; align-items:flex-start}
+  .feat .fi{
+    flex:none; width:34px; height:34px; border-radius:9px; font-size:17px;
+    display:flex; align-items:center; justify-content:center;
+    background:color-mix(in srgb, var(--accent) 10%, transparent);
+  }
+  .feat b{display:block; margin-bottom:1px}
+  .feat span{color:var(--muted)}
+  footer{text-align:center; color:var(--muted); font-size:.85rem; margin-top:38px}
+  footer a{color:var(--muted)}
+  @media (max-width:520px){ h1{font-size:1.9rem} header{padding-top:44px} .stat{min-width:100px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <img class="icon" src="icon.png" alt="">
+    <h1>WholeBudget</h1>
+    <p class="tag">The whole picture of your household money — on your Mac, and only on your Mac.</p>
+    <div class="badges">
+      <span class="badge version js-version">coming soon</span>
+      <span class="badge">free</span>
+      <span class="badge">notarized by Apple</span>
+      <span class="badge">no account, no cloud</span>
+    </div>
+    <div class="cta-row">
+      <a class="btn" href="https://github.com/alex-bisgould/wholebudget-releases/releases/latest/download/WholeBudget-mac-arm64.dmg">
+        Download for macOS
+      </a>
+      <button class="btn btn-ghost" id="share" type="button">Share</button>
+    </div>
+    <div class="sub">Apple silicon · macOS 13 or later · <span class="js-reldate">updates itself in-app</span></div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>0</b><span>accounts to create anywhere</span></div>
+    <div class="stat"><b>100%</b><span>of your data stays local</span></div>
+    <div class="stat"><b>1</b><span>drag to install</span></div>
+  </div>
+
+  <div class="card">
+    <h2>What you get</h2>
+    <div class="grid">
+      <div class="feat"><div class="fi">🏦</div><div><b>Accounts &amp; balances</b><span>chequing, credit, savings and loans in one running picture</span></div></div>
+      <div class="feat"><div class="fi">📥</div><div><b>Bank file imports</b><span>drop in your statement exports; duplicates and transfer pairs are caught for you</span></div></div>
+      <div class="feat"><div class="fi">🧾</div><div><b>Receipts</b><span>photograph or drop in a receipt and have its line items read out and filed</span></div></div>
+      <div class="feat"><div class="fi">📅</div><div><b>Bills &amp; subscriptions</b><span>recurring charges, renewal dates and the annual obligations that ambush a month</span></div></div>
+      <div class="feat"><div class="fi">🏠</div><div><b>Mortgage tracking</b><span>payments, interest split and where the balance is actually heading</span></div></div>
+      <div class="feat"><div class="fi">↩️</div><div><b>Money back</b><span>reimbursements and refunds you're still owed, tracked until they land</span></div></div>
+      <div class="feat"><div class="fi">📈</div><div><b>Trends &amp; insights</b><span>where the money went this month versus every month before it</span></div></div>
+      <div class="feat"><div class="fi">⬆️</div><div><b>Self-updating</b><span>new versions download inside the app and install when you say so</span></div></div>
+    </div>
+    <p class="fineprint">No accounts, no subscription, no server. Optional AI assistance for reading
+      receipts and sorting transactions runs on your own OpenAI or Anthropic key, added in Settings
+      — leave it out and everything else still works.</p>
+  </div>
+
+  <div class="card">
+    <h2>First-time setup</h2>
+    <ol>
+      <li>Open the downloaded <code>WholeBudget-mac-arm64.dmg</code>.</li>
+      <li>Drag <b>WholeBudget.app</b> into your Applications folder — that's the whole install.</li>
+      <li>Open WholeBudget. It starts empty; add your accounts, then import a statement
+        file or enter your first month by hand.</li>
+    </ol>
+    <div class="note"><b>Your data is yours.</b> Everything you enter — accounts, transactions,
+      receipts, bills, history — lives in <code>~/Library/Application&nbsp;Support/WholeBudget</code>,
+      outside the app itself. Updating or even deleting and reinstalling the app never touches it,
+      and it is included in any normal Time Machine backup.</div>
+    <p class="fineprint">Signed and notarized by Apple — it opens like any other Mac app,
+      no warnings and no Terminal.</p>
+  </div>
+
+  <div class="card">
+    <h2>Requirements</h2>
+    <ol>
+      <li>A Mac with Apple silicon running macOS 13 or later.</li>
+      <li>Roughly 600&nbsp;MB of disk space, plus room for your own receipts.</li>
+    </ol>
+  </div>
+
+  <footer>
+    <span class="js-version">unreleased</span> ·
+    <a href="whats-new.html">What's new</a> ·
+    <a href="https://github.com/alex-bisgould/wholebudget-releases/releases">All releases on GitHub</a>
+  </footer>
+
+</div>
+<script>
+(() => {
+  // Keep the version live: the badge follows the latest GitHub release, so
+  // this page never goes stale between deploys. Before the first release the
+  // baked-in "coming soon" is what shows.
+  fetch("https://api.github.com/repos/alex-bisgould/wholebudget-releases/releases/latest")
+    .then(r => r.ok ? r.json() : null)
+    .then(d => {
+      if (!d || !d.tag_name) return;
+      const v = String(d.tag_name).replace(/^v/, "");
+      document.querySelectorAll(".js-version").forEach(el => { el.textContent = "v" + v; });
+      if (d.published_at) {
+        const dt = new Date(d.published_at);
+        document.querySelectorAll(".js-reldate").forEach(el => {
+          el.textContent = "latest release " +
+            dt.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+        });
+      }
+    })
+    .catch(() => {});
+
+  const SHARE = {
+    title: "WholeBudget for your Mac",
+    text: "A free household budgeting app that runs entirely on your own Mac — no account, no cloud, no subscription.",
+    url: "https://alex-bisgould.github.io/wholebudget-releases/"
+  };
+  const btn = document.getElementById("share");
+  const MESSAGE = SHARE.text + "\n" + SHARE.url;
+
+  function copiedState() {
+    btn.textContent = "Copied!";
+    btn.disabled = true;
+    setTimeout(() => { btn.textContent = "Share"; btn.disabled = false; }, 2000);
+  }
+  function legacyCopy() {
+    const ta = document.createElement("textarea");
+    ta.value = MESSAGE;
+    ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) {}
+    ta.remove();
+    return ok;
+  }
+
+  btn.addEventListener("click", async () => {
+    if (navigator.share) {
+      try { await navigator.share(SHARE); } catch (e) { /* user cancelled */ }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(MESSAGE);
+      copiedState();
+      return;
+    } catch (e) { /* clipboard API blocked — try the legacy path */ }
+    if (legacyCopy()) { copiedState(); return; }
+    location.href = "mailto:?subject=" + encodeURIComponent(SHARE.title)
+      + "&body=" + encodeURIComponent(MESSAGE);
+  });
+})();
+</script>
+</body>
+</html>

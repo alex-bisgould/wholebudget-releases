@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WholeBudget — what's new</title>
+<meta name="description" content="Every WholeBudget release, newest first: what changed in each version and where to download it.">
+<link rel="icon" href="icon.png">
+<style>
+  /* Same token set as index.html — the two pages are one site. */
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --fg:#12161c; --muted:#767d89;
+    --accent:#1a7f5a; --accent-ink:#ffffff; --gold:#c8a415; --line:#e4e7ec;
+    --code-bg:#f2f4f7; --chip:#eef1f6;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0d1117; --card:#161b22; --fg:#e6edf3; --muted:#9aa4b2;
+      --accent:#3fbf8f; --accent-ink:#0d1117; --gold:#e8c547; --line:#2a313c;
+      --code-bg:#0b0f14; --chip:#1b222c;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:0 20px 72px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--fg);
+    background:radial-gradient(1100px 620px at 50% -12%, color-mix(in srgb, var(--accent) 12%, var(--bg)) 0%, var(--bg) 46%, var(--bg) 100%);
+    min-height:100vh; line-height:1.55;
+  }
+  .wrap{max-width:900px; margin:0 auto}
+  header{text-align:center; padding:52px 0 4px}
+  .icon{width:76px; height:76px; border-radius:23%; box-shadow:0 8px 28px rgba(0,0,0,.18)}
+  h1{font-size:2.1rem; margin:16px 0 6px; letter-spacing:-.02em}
+  .tag{color:var(--muted); margin:0 0 18px; font-size:1.02rem}
+  .badges{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:0 0 22px}
+  .badge{
+    font-size:.78rem; font-weight:600; color:var(--muted);
+    background:var(--chip); border:1px solid var(--line);
+    padding:4px 12px; border-radius:999px;
+  }
+  .badge.version{
+    color:var(--gold);
+    border-color:color-mix(in srgb, var(--gold) 45%, transparent);
+    background:color-mix(in srgb, var(--gold) 10%, transparent);
+  }
+  .btn{
+    display:inline-block; background:var(--accent); color:var(--accent-ink);
+    text-decoration:none; font-weight:650; font-size:1.05rem;
+    padding:13px 28px; border-radius:11px;
+    box-shadow:0 6px 18px color-mix(in srgb, var(--accent) 35%, transparent);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover{transform:translateY(-1px); box-shadow:0 9px 24px color-mix(in srgb, var(--accent) 42%, transparent)}
+  .cta-row{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; align-items:stretch}
+  .btn-ghost{
+    background:transparent; color:var(--accent);
+    border:1.5px solid var(--accent); box-shadow:none;
+  }
+  .btn-ghost:hover{
+    background:color-mix(in srgb, var(--accent) 10%, transparent);
+    transform:none; box-shadow:none;
+  }
+  .sub{color:var(--muted); font-size:.85rem; margin-top:12px}
+
+  /* Version rail beside the stream of releases. */
+  .layout{display:grid; grid-template-columns:136px 1fr; gap:28px; margin-top:36px; align-items:start}
+  .rail{position:sticky; top:24px; max-height:calc(100vh - 48px); overflow-y:auto}
+  .rail a{
+    display:block; text-decoration:none; color:var(--muted); font-size:.87rem;
+    padding:6px 10px; border-radius:8px; border-left:2px solid transparent;
+  }
+  .rail a:hover{background:var(--chip); color:var(--fg)}
+  .rail a.on{
+    color:var(--fg); font-weight:650; border-left-color:var(--accent);
+    background:color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+  .rail .rd{display:block; font-size:.72rem; opacity:.75; font-weight:400}
+
+  .rel{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:20px 24px; margin-bottom:16px; scroll-margin-top:20px;
+  }
+  .rel-h{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+  .rel-h h2{font-size:1.25rem; margin:0; letter-spacing:-.01em}
+  .rel-h .when{color:var(--muted); font-size:.85rem}
+  .rel-h .sp{flex:1}
+  .pill{
+    font-size:.7rem; font-weight:700; letter-spacing:.03em;
+    padding:3px 10px; border-radius:999px; color:var(--gold);
+    background:color-mix(in srgb, var(--gold) 14%, transparent);
+    border:1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+  .body{margin-top:12px; font-size:.95rem}
+  .body ul{margin:0; padding-left:20px}
+  .body li{margin-bottom:10px}
+  .body li:last-child{margin-bottom:0}
+  .body h2,.body h3,.body h4{font-size:1rem; margin:16px 0 8px}
+  .body p{margin:10px 0}
+  .rel.shut .body, .rel.shut .dl{display:none}
+  code{
+    background:var(--code-bg); border:1px solid var(--line); border-radius:6px;
+    padding:2px 6px; font-size:.87em;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  .toggle{
+    background:none; border:none; color:var(--accent); font:inherit; font-size:.86rem;
+    cursor:pointer; padding:0; margin-top:2px;
+  }
+  .toggle:hover{text-decoration:underline}
+  .dl{display:block; margin-top:14px; font-size:.84rem; color:var(--muted)}
+  .dl a{color:var(--muted)}
+  .msg{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:24px 26px; color:var(--muted);
+  }
+  footer{text-align:center; color:var(--muted); font-size:.85rem; margin-top:38px}
+  footer a{color:var(--muted)}
+  @media (max-width:760px){
+    .layout{grid-template-columns:1fr; gap:14px}
+    .rail{
+      position:static; display:flex; gap:6px; overflow-x:auto; max-height:none;
+      padding-bottom:6px; border-bottom:1px solid var(--line);
+    }
+    .rail a{flex:none; white-space:nowrap; border-left:none; border-bottom:2px solid transparent}
+    .rail a.on{border-left:none; border-bottom-color:var(--accent)}
+    .rail .rd{display:none}
+  }
+  @media (max-width:520px){ h1{font-size:1.8rem} header{padding-top:40px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <a href="index.html"><img class="icon" src="icon.png" alt="WholeBudget"></a>
+    <h1>What's new</h1>
+    <p class="tag">Every release of WholeBudget, newest first.</p>
+    <div class="badges">
+      <span class="badge version js-version">latest</span>
+      <span class="badge js-count">&nbsp;</span>
+    </div>
+    <div class="cta-row">
+      <a class="btn" href="https://github.com/alex-bisgould/wholebudget-releases/releases/latest/download/WholeBudget-mac-arm64.dmg">
+        Download the latest
+      </a>
+      <a class="btn btn-ghost" href="index.html">About WholeBudget</a>
+    </div>
+    <div class="sub">Already running WholeBudget? It updates itself — open it and check the version in Settings.</div>
+  </header>
+
+  <div class="layout">
+    <nav class="rail" id="rail" aria-label="Versions"></nav>
+    <main id="stream">
+      <div class="msg">Loading releases…</div>
+    </main>
+  </div>
+
+  <footer>
+    <a href="index.html">Download</a> ·
+    <a href="https://github.com/alex-bisgould/wholebudget-releases/releases">Releases on GitHub</a>
+  </footer>
+
+</div>
+<script>
+(() => {
+  const REPO = "alex-bisgould/wholebudget-releases";
+  const FEED = `https://api.github.com/repos/${REPO}/releases?per_page=100`;
+  const DMG = "WholeBudget-mac-arm64.dmg";
+
+  const rail = document.getElementById("rail");
+  const stream = document.getElementById("stream");
+
+  const esc = s => String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+  // Same markdown-lite subset the app renders, including the fold of
+  // hard-wrapped bullets back into their <li> — release bodies come from
+  // CHANGELOG.md, which wraps at ~78 columns with a 2-space indent.
+  function mdLite(md) {
+    const lines = esc(md).split(/\r?\n/);
+    const inline = s => s
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/`([^`]+)`/g, "<code>$1</code>");
+    let html = "", inList = false, para = [], li = null;
+    const flushLi = () => { if (li !== null) { html += `<li>${inline(li)}</li>`; li = null; } };
+    const flushPara = () => { if (para.length) { html += "<p>" + para.join("<br>") + "</p>"; para = []; } };
+    const closeList = () => { flushLi(); if (inList) { html += "</ul>"; inList = false; } };
+    lines.forEach(raw => {
+      const t = raw.trim();
+      const h = t.match(/^(#{2,4})\s+(.*)$/);
+      const b = t.match(/^[-*]\s+(.*)$/);
+      if (h)       { flushPara(); closeList(); const n = h[1].length; html += `<h${n}>${inline(h[2])}</h${n}>`; }
+      else if (b)  { flushPara(); flushLi(); if (!inList) { html += "<ul>"; inList = true; } li = b[1]; }
+      else if (!t) { flushPara(); closeList(); }
+      else if (li !== null && /^\s/.test(raw)) { li += " " + t; }
+      else         { closeList(); para.push(inline(t)); }
+    });
+    flushPara(); closeList();
+    return html;
+  }
+
+  // A release body is the changelog bullets wrapped in boilerplate. Peel both
+  // ends off: the download/notarization preamble above the "What's new"
+  // heading, the heading itself (this page prints the version as the card
+  // title), and the trailing requirements paragraph.
+  function notesOf(body) {
+    let s = String(body || "");
+    const m = s.match(/^[ \t]*#{2,}[ \t]*what[’'`]?s\s+new[^\n]*$/im);
+    if (m) s = s.slice(s.indexOf(m[0]) + m[0].length);
+    s = s.replace(/\n[ \t]*\n[ \t]*Requires macOS[\s\S]*$/i, "");
+    return s.trim();
+  }
+
+  const verOf = tag => {
+    const m = /^v?(\d+(?:\.\d+)*)/.exec(String(tag || ""));
+    return m ? m[1] : null;                    // non-version tags -> null
+  };
+  const verKey = v => v.split(".").map(Number);
+
+  const parseDate = iso => {
+    const m = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(String(iso || ""));
+    if (m) return { d: new Date(+m[1], +m[2] - 1, m[3] ? +m[3] : 1), dayKnown: !!m[3] };
+    const d = new Date(iso);
+    return isNaN(d) ? null : { d, dayKnown: true };
+  };
+  const fmtDate = iso => {
+    const p = parseDate(iso);
+    if (!p) return "";
+    return p.d.toLocaleDateString(undefined, p.dayKnown
+      ? { month: "long", day: "numeric", year: "numeric" }
+      : { month: "long", year: "numeric" });
+  };
+  const shortDate = iso => {
+    const p = parseDate(iso);
+    if (!p) return "";
+    return p.d.toLocaleDateString(undefined, p.dayKnown
+      ? { month: "short", day: "numeric" }
+      : { month: "short", year: "numeric" });
+  };
+
+  function render(releases) {
+    if (!releases.length) {
+      stream.innerHTML = '<div class="msg"><b>No releases published yet.</b><br>' +
+        'WholeBudget hasn\'t shipped its first public build. When it does, every version ' +
+        'will be listed here with its changelog and a direct download.</div>';
+      rail.innerHTML = "";
+      document.querySelectorAll(".js-version").forEach(el => { el.textContent = "unreleased"; });
+      return;
+    }
+    const latest = releases[0].version;
+    document.querySelectorAll(".js-version").forEach(el => { el.textContent = "v" + latest; });
+    const first = releases[releases.length - 1];
+    document.querySelectorAll(".js-count").forEach(el => {
+      el.textContent = releases.length + " release" + (releases.length === 1 ? "" : "s") +
+        " since " + (fmtDate(first.date).replace(/^\w+ \d+, /, "") || "the start");
+    });
+
+    rail.innerHTML = releases.map(r =>
+      `<a href="#v${esc(r.version)}" data-v="${esc(r.version)}">${esc(r.version)}` +
+      `<span class="rd">${esc(r.shortDate)}</span></a>`
+    ).join("");
+
+    stream.innerHTML = releases.map((r, i) => {
+      const open = i === 0;                    // latest expanded, the rest folded
+      const dmg = r.dmg
+        ? `<span class="dl">⬇︎ <a href="${esc(r.dmg)}">WholeBudget ${esc(r.version)} — ${esc(DMG)}</a></span>`
+        : "";
+      return `<article class="rel${open ? "" : " shut"}" id="v${esc(r.version)}" data-v="${esc(r.version)}">
+        <div class="rel-h">
+          <h2>WholeBudget ${esc(r.version)}</h2>
+          ${open ? '<span class="pill">LATEST</span>' : ""}
+          <span class="sp"></span>
+          <span class="when">${esc(r.longDate)}</span>
+        </div>
+        ${open ? "" : '<button class="toggle" type="button">Show what changed</button>'}
+        <div class="body">${r.notes ? mdLite(r.notes) : "<p>No notes for this release.</p>"}</div>
+        ${dmg}
+      </article>`;
+    }).join("");
+
+    stream.addEventListener("click", e => {
+      const btn = e.target.closest(".toggle");
+      if (!btn) return;
+      btn.closest(".rel").classList.remove("shut");
+      btn.remove();
+    });
+    rail.addEventListener("click", e => {
+      const a = e.target.closest("a");
+      if (!a) return;
+      const card = document.getElementById("v" + a.dataset.v);
+      if (card) { card.classList.remove("shut"); const t = card.querySelector(".toggle"); if (t) t.remove(); }
+    });
+
+    // Rail follows the reader.
+    const links = new Map([...rail.querySelectorAll("a")].map(a => [a.dataset.v, a]));
+    const mark = v => links.forEach((a, k) => a.classList.toggle("on", k === v));
+    mark(latest);
+    if ("IntersectionObserver" in window) {
+      const seen = new Set();
+      const io = new IntersectionObserver(ents => {
+        ents.forEach(en => en.isIntersecting ? seen.add(en.target.dataset.v) : seen.delete(en.target.dataset.v));
+        const top = releases.map(r => r.version).find(v => seen.has(v));
+        if (top) mark(top);
+      }, { rootMargin: "-10% 0px -70% 0px" });
+      stream.querySelectorAll(".rel").forEach(el => io.observe(el));
+    }
+
+    // Deep link: whats-new.html#v1.0.0 opens that release expanded.
+    const hash = decodeURIComponent(location.hash.replace(/^#/, ""));
+    if (hash) {
+      const card = document.getElementById(hash);
+      if (card) {
+        card.classList.remove("shut");
+        const t = card.querySelector(".toggle"); if (t) t.remove();
+        card.scrollIntoView();
+      }
+    }
+  }
+
+  // Errors we phrase ourselves are marked; anything else is a network failure
+  // whose raw message ("Failed to fetch") means nothing to a reader.
+  const said = msg => Object.assign(new Error(msg), { friendly: true });
+
+  fetch(FEED)
+    .then(r => r.ok ? r.json() : Promise.reject(said(r.status === 403
+      ? "GitHub is rate-limiting this page — it allows only so many anonymous requests an hour. Try again shortly."
+      : "GitHub returned HTTP " + r.status + ".")))
+    .then(list => {
+      const rows = (Array.isArray(list) ? list : [])
+        .filter(r => !r.draft && !r.prerelease && verOf(r.tag_name))
+        .map(r => ({
+          version: verOf(r.tag_name),
+          notes: notesOf(r.body),
+          longDate: fmtDate(r.published_at),
+          date: r.published_at,
+          shortDate: shortDate(r.published_at),
+          dmg: (r.assets || []).filter(a => a.name === DMG)
+                 .map(a => a.browser_download_url)[0] || null,
+        }));
+      rows.sort((a, b) => {
+        const x = verKey(a.version), y = verKey(b.version);
+        for (let i = 0; i < Math.max(x.length, y.length); i++) {
+          if ((y[i] || 0) !== (x[i] || 0)) return (y[i] || 0) - (x[i] || 0);
+        }
+        return 0;
+      });
+      render(rows);
+    })
+    .catch(err => {
+      // Never a blank page: say what happened and hand over to GitHub.
+      stream.innerHTML = '<div class="msg"><b>Couldn\'t load the release list.</b><br>' +
+        esc(err && err.friendly ? err.message
+            : "You may be offline, or something on your network blocked the request.") +
+        '<br><br>The full history is always on ' +
+        `<a href="https://github.com/${REPO}/releases">GitHub releases</a>.</div>`;
+      rail.innerHTML = "";
+    });
+})();
+</script>
+</body>
+</html>
