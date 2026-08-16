@@ -105,6 +105,10 @@
   .feat span{color:var(--muted)}
   footer{text-align:center; color:var(--muted); font-size:.85rem; margin-top:38px}
   footer a{color:var(--muted)}
+  .shot{margin:26px 0 4px; border-radius:14px; overflow:hidden;
+    border:1px solid color-mix(in srgb, var(--fg) 10%, transparent);
+    box-shadow:0 18px 48px -18px rgba(0,0,0,.35)}
+  .shot img{display:block; width:100%; height:auto}
   @media (max-width:520px){ h1{font-size:1.9rem} header{padding-top:44px} .stat{min-width:100px} }
 </style>
 </head>
@@ -134,6 +138,12 @@
     <div class="stat"><b>0</b><span>accounts to create anywhere</span></div>
     <div class="stat"><b>100%</b><span>of your data stays local</span></div>
     <div class="stat"><b>1</b><span>drag to install</span></div>
+  </div>
+
+  <!-- Dashboard screenshot — captured from a demo-data instance (sample
+       figures only; no real financial data appears on this page ever). -->
+  <div class="shot">
+    <img src="screenshot.png" alt="WholeBudget dashboard showing monthly income, expenses, pacing and cash flow" loading="lazy">
   </div>
 
   <div class="card">
