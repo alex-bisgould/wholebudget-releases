@@ -15,6 +15,12 @@ credential belongs here.
 It is public for one reason: so that anyone can download a release and so the
 in-app updater can read the release feed without a token.
 
+`ios/latest.json` is release metadata, not code or data: the version and build
+number of the newest iPhone TestFlight build that every tester group can
+install. The iPhone app's "Update available" card reads it. Only the iOS
+repo's `scripts/publish-latest.sh` writes it, and the build number never goes
+backwards.
+
 ## Release assets — the names are load-bearing
 
 Every release attaches exactly three assets. **Never rename them.** Each name
