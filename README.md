@@ -21,6 +21,12 @@ install. The iPhone app's "Update available" card reads it. Only the iOS
 repo's `scripts/publish-latest.sh` writes it, and the build number never goes
 backwards.
 
+`ios/latest-internal.json` has the same shape for the newest build the
+internal TestFlight testers can install (no Beta App Review needed). The app
+reads it instead of `latest.json` only when a tester turns on "Tell me about
+every test build" in Settings. `scripts/publish-latest.sh --internal` writes
+it, under the same never-backwards rule.
+
 ## Release assets — the names are load-bearing
 
 Every release attaches exactly three assets. **Never rename them.** Each name
